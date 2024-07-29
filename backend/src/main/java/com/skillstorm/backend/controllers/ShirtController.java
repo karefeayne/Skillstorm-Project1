@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.backend.models.Shirt;
 import com.skillstorm.backend.services.ShirtService;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
 @RequestMapping("/shirts")
+@CrossOrigin //(origins = "http://localhost:5173")
 public class ShirtController {
 
 
