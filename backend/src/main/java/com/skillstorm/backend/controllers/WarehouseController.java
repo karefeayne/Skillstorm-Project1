@@ -1,5 +1,6 @@
 package com.skillstorm.backend.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.skillstorm.backend.models.Shirt;
 import com.skillstorm.backend.models.Warehouse;
+import com.skillstorm.backend.services.ShirtService;
 import com.skillstorm.backend.services.WarehouseService;
 
 import jakarta.validation.Valid;
@@ -30,48 +32,77 @@ import org.springframework.web.bind.annotation.RequestParam;
 @CrossOrigin
 public class WarehouseController {
 
-    private WarehouseService service;
+    private WarehouseService wareService;
 
-    public WarehouseController(WarehouseService service) {
-        this.service = service;
+    private ShirtService shirtService;
+
+    public WarehouseController(WarehouseService wareService, ShirtService shirtService) {
+        this.wareService = wareService;
+        this.shirtService = shirtService;
     }
 
     @GetMapping
     public Iterable<Warehouse> findAll() {
-        return service.findAll();
+        return wareService.findAll();
     }
 
     @GetMapping("/exists/{id}")
     public boolean existsById(@PathVariable int id) {
-        return service.existsById(id);
+        return wareService.existsById(id);
     }
     
 
     @GetMapping("/{id}")
     public ResponseEntity<Warehouse> findById(@PathVariable int id) {
-        Optional<Warehouse> warehouse = service.findById(id);
+        Optional<Warehouse> warehouse = wareService.findById(id);
         if (warehouse.isPresent())
             return ResponseEntity.ok(warehouse.get());
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    // Returns all the shirts that are associated with the
+    // warehouse that has the id passed in as an argument
+    @GetMapping("/{id}/shirts")
+    public List<Shirt> warehouseShirts(@PathVariable int id) {
+        Optional<Warehouse> warehouse = wareService.findById(id);
+        List<Shirt> shirts = warehouse.get().getShirts();
+        return shirts;
+    }
+
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Warehouse create(@Valid @RequestBody Warehouse warehouse) {
-        return service.save(warehouse);
+        return wareService.save(warehouse);
     }
 
-    @DeleteMapping
+
+    // Deletes all warehouses and all associated shirts
+    @DeleteMapping("/all")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteAll() {
-        service.deleteAll();
+        Iterable<Warehouse> warehouses = findAll();
+
+        for(Warehouse warehouse: warehouses) {
+            deleteById(warehouse.getId());
+        }
     }
 
+
+    // Deletes that warehouse associated with the id given
+    // And also deletes all shirts that had that warehouse
+    // as their warehouse id
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable int id) {
-        service.deleteById(id);
+        List<Shirt> shirts = warehouseShirts(id);
+
+        for(Shirt shirt: shirts) {
+            shirtService.deleteById(shirt.getId());
+        }
+
+        wareService.deleteById(id);
     }
     
 

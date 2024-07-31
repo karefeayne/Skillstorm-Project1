@@ -1,11 +1,14 @@
 package com.skillstorm.backend.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.skillstorm.backend.models.Warehouse;
 import com.skillstorm.backend.repositories.WarehouseRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class WarehouseService {
@@ -24,12 +27,23 @@ public class WarehouseService {
         return repo.existsById(id);
     }
 
+    public List<Warehouse> findByName(String name) {
+        return repo.findByName(name);
+    }
+
     public Optional<Warehouse> findById(int id) {
         return repo.findById(id);
     }
 
+    @Transactional
     public Warehouse save(Warehouse warehouse) {
-        return repo.save(warehouse);
+        if (findByName(warehouse.getName()).isEmpty()) {
+            return repo.save(warehouse);
+        }
+        else {
+            throw new RuntimeException("Could not add Warehouse " +
+            "because one with that name already eixists");
+        }
     }
 
     public void deleteAll() {

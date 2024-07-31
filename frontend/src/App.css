@@ -2,7 +2,10 @@ header {
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   margin-left: 7rem;
+  margin-right: 7rem;
 }
 
 .headerLinks {

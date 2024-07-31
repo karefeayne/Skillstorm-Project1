@@ -1,7 +1,8 @@
 import './App.css'
-import {BrowserRouter, Routes, Route, Link, Navigate} from 'react-router-dom'
-import Shirt from './pages/Shirt/Shirt'
-import Home from './pages/Home/Home'
+import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import Shirt from './componenets/Shirt/Shirt'
+import Home from './componenets/Home/Home'
+import Warehouse from './componenets/Warehouse/Warehouse'
 
 function App() {
 
@@ -12,10 +13,12 @@ function App() {
 
       <BrowserRouter>
           <button className="headerLinks"><Link to="/home">Home</Link> </button>
+          <button className='headerLinks'><Link to="/warehouses">Warehouses</Link></button>
           <button className='headerLinks'><Link to="/shirts">Shirts</Link></button>
 
           <Routes>
             <Route path="/home" element={<Home />}/>
+            <Route path="/warehouses" element={<Warehouse />}/>
             <Route path="/shirts" element={<Shirt />}/>
             <Route path='*' element={<Home />} />
             {/* <Route path='*' element={<Navigate to='/' />} /> */}

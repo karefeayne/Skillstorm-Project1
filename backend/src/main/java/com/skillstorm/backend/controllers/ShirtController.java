@@ -9,6 +9,7 @@ import com.skillstorm.backend.services.ShirtService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class ShirtController {
         return service.save(shirt);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/all")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteAll() {
         service.deleteAll();

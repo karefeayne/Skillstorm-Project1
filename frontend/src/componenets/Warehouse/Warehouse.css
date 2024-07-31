@@ -1,0 +1,23 @@
+table {
+    top: 50%;
+    left: 50%;
+}
+
+h2 {
+    /* border: 1rem solid white; */
+    text-align: center;
+}
+
+td {
+    align-items: center;
+    align-content: center;
+  }
+
+.warehouseContainer {
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 1rem;
+    width: fit-content;
+    border: 1px solid white;
+    padding: 2rem;
+}

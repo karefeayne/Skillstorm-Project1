@@ -91,6 +91,4 @@ public class Warehouse {
                 + capacity + ", shirts=" + shirts + "]";
     }
 
-    
-
 }
