@@ -26,7 +26,7 @@ function App() {
           <Routes>
             <Route path="/home" element={<Home />}/>
             <Route path="/warehouses" element={<Warehouse />}/>
-            <Route path="/shirts" element={<Shirt />}/>
+            <Route path="/shirts" element={<Shirt state={{}}/>}/>
             <Route path="/displayShirts" element={<DisplayShirts />}></Route>
             <Route path='*' element={<Home />} />
             {/* <Route path='*' element={<Navigate to='/' />} /> */}

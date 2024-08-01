@@ -28,7 +28,6 @@ function Shirt() {
         fetch(wareUrl)
         .then(data => data.json())
         .then(returnedData => {
-            console.log(warehouse)
             setWarehouses(returnedData);
             setWarehouseLoaded(true)
         })
@@ -250,8 +249,18 @@ function Shirt() {
                 </tbody>
                 </table>
                 </Form>
+                <br />
             </div>
+            
 
+
+            <div>
+                <table>
+                    <thead>
+                    <tr><td className='displayingMessage'colSpan='7'><h2>Displaying Shirts From All Warehouses</h2></td></tr>
+                    </thead>
+                </table>
+            </div>
 
 
             

@@ -3,6 +3,8 @@
   margin-right: 3rem;
 } */
 
+/* background-color: #242424 */
+
 #logo, .headerLinks {
   height: 4em;
   width: 4em;
@@ -69,12 +71,20 @@
 }
 
 .searchContainer {
+  justify-items: center;
   top: 20rem;
   position: fixed;
 }
 
 .searchButton {
   background-color: rgb(121, 121, 126);
+}
+
+.displayingMessage {
+  font-size: 1rem;
+  top: 25rem;
+  position: fixed;
+  background-color: #242424;
 }
 
 table {

@@ -1,6 +1,7 @@
 import './DisplayShirt.css'
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify';
 import { Label, Form, Button, Select, Alert, TextInput } from "@trussworks/react-uswds";
 
 
@@ -16,7 +17,11 @@ function DisplayShirts() {
     const[shirtLoaded, setShirtLoaded] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [created, setCreated] = useState(false);
+    const [reload, setReload] = useState(false)
     let count = 0;
+
+    let optionsArr = []
+    let selectOptions = ""
 
 
     useEffect(() => {
@@ -29,7 +34,8 @@ function DisplayShirts() {
         })
         .catch(err => {alert(err); console.log(err)})
 
-    }, [deleted, created])
+    }, [deleted, created, reload])
+
 
     function deleteById(shirt_id) {
         const deleteUrl = "http://localhost:8080/shirts" + "/" +shirt_id;
@@ -80,9 +86,78 @@ function DisplayShirts() {
 
         e.target.reset();
     }
+
+    function handleChange(e) {
+        e.preventDefault();
+        
+        // console.log(e.target.value)
+
+        if (e.target.value == "select") {
+            optionsArr = []
+        }
+        else if(e.target.value == "byType") {
+            optionsArr = ["Polo", "V-Neck", "Crewneck", "Long Sleeve"]
+        }
+        else if(e.target.value == "byColor") {
+            optionsArr = ["Blue", "Black", "White", "Orange"]
+        }
+        else if(e.target.value == "bySize") {
+            optionsArr = ["Small", "Medium", "Large"]
+        }
+        else if(e.target.value == "byPrice") {
+            optionsArr = ["5.99", "9.99"]
+        }
+
+        selectOptions = ""
+        let length = optionsArr.length
+        for (let i = 0; i < length; i++) {
+            {
+                selectOptions += '<option value="' + optionsArr[i] + '">' + optionsArr[i] + "</option>"
+            }
+        }
+        //toast(selectOptions)
+        document.getElementById("searchInput").innerHTML = selectOptions
+
+    }
+
+
+    function search(e) {
+        e.preventDefault();
+
+        let shirtUrl = "http://localhost:8080/shirts"
+
+        let data = new FormData(e.target)
+        let searchType = data.get("by")
+        let searchValue = data.get("searchInput")
+
+        if (searchType == "select") {
+            toast.warning("Please select an option to search by first",
+                {
+                    theme: "dark"
+                }
+            )
+        }
+        else {
+            fetch(shirtUrl + "/" + searchType + "/" + searchValue)
+            .then(data => data.json())
+            .then(returnedData => {
+                let filteredShirts = returnedData.filter(shirt => shirt.warehouse.id == warehouse.id)
+                setShirts(filteredShirts);
+                setShirtLoaded(true)
+            })
+            .catch(err => {alert(err); console.log(err)})
+        }
+    }
+
+    function reset(e) {
+        document.getElementById("searchInput").innerHTML = ""
+        setReload(!reload) 
+    }
+
     
     return (
         <>
+        <ToastContainer />
             <div className='addContainer'>
                 <h3 className='highlightValue'>Total Shirts = {shirts.length}</h3>
                 <Form onSubmit={addShirt}>
@@ -125,6 +200,51 @@ function DisplayShirts() {
                 </table>
             </Form>
             </div>
+
+
+
+            <div className='searchContainer'>
+            <Form onSubmit={search} onReset={reset}>
+                <table className='searchTable'>
+                    <tbody>
+                    <tr>
+                    <td>
+                    Search By: <select onChange={handleChange} name="by" id="by">
+                        <option value="select">-- Select --</option>
+                        <option value="byType">Type</option>
+                        <option value="byColor">Color</option>
+                        <option value="bySize">Size</option>
+                        <option value="byPrice">Price</option>
+                    </select>
+                    </td>
+                    <td>
+                    <select name="searchInput" id="searchInput">
+                    </select>
+                    </td>
+                    <td><button className='searchButton' type="submit">Search</button></td>
+                    <td><button className='resetButton' type='reset'>Reset</button></td>
+                </tr>
+                </tbody>
+                </table>
+                </Form>
+            </div>
+
+
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td className='displayingMessage'colSpan='7'>
+                        <h2>
+                            Displaying Shirts From: <span className='highlightValue'>{warehouse.name}</span> in {warehouse.state}, {warehouse.city}
+                        </h2>
+                        </td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+
            
             <div className='innerTableContainer'>
         <table>
@@ -145,7 +265,7 @@ function DisplayShirts() {
                                 </tr>
                             )
                           
-                        ) :  (<tr><td colSpan='6'><h2>No Shirts In This Warehouse</h2></td></tr>)
+                        ) :  (<tr><td colSpan='6'><h2>No Shirts Found</h2></td></tr>)
                         : (<tr><td colSpan='6'>Loading...</td></tr>) 
                     }
                 </tbody>
