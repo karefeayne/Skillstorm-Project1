@@ -68,7 +68,7 @@
   overflow-x: hidden;
 }
 
-.warehouseDeleteContainer,.searchContainer {
+.searchContainer {
   top: 20rem;
   position: fixed;
 }

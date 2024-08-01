@@ -13,6 +13,7 @@ function Warehouse() {
     const [warehouses, setWarehouses] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [created, setCreated] = useState(false);
+    const [deleted, setDeleted] = useState(false);
     let names = []
 
     useEffect(() => {
@@ -25,7 +26,7 @@ function Warehouse() {
         })
         .catch(err => {alert(err); console.log(err)})
 
-    }, [created])
+    }, [created, deleted])
 
     function addWarehouse(e) {
         e.preventDefault();
@@ -78,6 +79,16 @@ function Warehouse() {
         }
     }
 
+    function deleteWarehouse(warehouseId) {
+        const deleteUrl = url + "/" + warehouseId;
+
+        fetch(deleteUrl, {method: 'DELETE'})
+        .then(() => {
+            setDeleted(!deleted);
+        })
+        .catch(err => console.log(err))
+    }
+
     return (
         <>
         <ToastContainer />
@@ -97,18 +108,19 @@ function Warehouse() {
                 </table>
             </Form>
             </div>
-            <div className='warehouseDeleteContainer'>
-                <button className='deleteBtn'>Delete A Warehouse</button>
-            </div>
 
-            <div className='innerTableContainer'>
-        <table>
+            {/* <div className='warehouseDeleteContainer'>
+                <button className='deleteBtn'>Delete A Warehouse</button>
+            </div> */}
+
+            <div className='warehousesGrid'>
+        {/* <table>
             <tbody>       
-            <tr id='warehouseTableRow'>
+            <tr id='warehouseTableRow'> */}
             {loaded ?
                 warehouses.map(
                     warehouse => (names.push(warehouse.name),
-                        <td key={warehouse.id}>
+                        <div className='outterWarehouseContainer' key={warehouse.id}>
                             <h2>{warehouse.name}</h2>
                             <Link to={"/displayShirts"} state={{warehouse}}>
                             {/* <Link to={{
@@ -121,14 +133,16 @@ function Warehouse() {
                                 Capacity: {warehouse.capacity}
                                 </div>
                             </Link>
-                        </td>
+                            <button className='deleteBtn' onClick={() => deleteWarehouse(warehouse.id)}>Delete Warehouse</button>
+                            
+                        </div>
                     )
                 )
                 : <th colSpan={warehouses.length}>Loading...</th>
             }
-            </tr>
+            {/* </tr>
             </tbody>
-        </table>
+        </table> */}
         </div>
         </>
     )

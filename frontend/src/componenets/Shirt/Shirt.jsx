@@ -15,6 +15,7 @@ function Shirt() {
     const [warehouseLoaded, setWarehouseLoaded] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [created, setCreated] = useState(false);
+    const [reload, setReload] = useState(false)
 
     let optionsArr = []
     let selectOptions = ""
@@ -27,6 +28,7 @@ function Shirt() {
         fetch(wareUrl)
         .then(data => data.json())
         .then(returnedData => {
+            console.log(warehouse)
             setWarehouses(returnedData);
             setWarehouseLoaded(true)
         })
@@ -45,7 +47,7 @@ function Shirt() {
         .catch(err => {alert(err); console.log(err)})
 
 
-    }, [deleted, created])
+    }, [deleted, created, reload])
 
     function deleteById(shirt_id) {
         const deleteUrl = url + "/" +shirt_id;
@@ -141,7 +143,7 @@ function Shirt() {
         let searchValue = data.get("searchInput")
 
         if (searchType == "select") {
-            toast.warning("Please select an option to search by",
+            toast.warning("Please select an option to search by first",
                 {
                     theme: "dark"
                 }
@@ -157,10 +159,11 @@ function Shirt() {
             })
             .catch(err => {alert(err); console.log(err)})
         }
+    }
 
-        
+    function reset(e) {
         document.getElementById("searchInput").innerHTML = ""
-        e.target.reset();
+        setReload(!reload) 
     }
 
 
@@ -223,7 +226,7 @@ function Shirt() {
 
 
             <div className='searchContainer'>
-            <Form onSubmit={search}>
+            <Form onSubmit={search} onReset={reset}>
                 <table className='searchTable'>
                     <tbody>
                     <tr>
@@ -242,6 +245,7 @@ function Shirt() {
                     </select>
                     </td>
                     <td><button className='searchButton' type="submit">Search</button></td>
+                    <td><button className='resetButton' type='reset'>Reset</button></td>
                 </tr>
                 </tbody>
                 </table>
@@ -270,7 +274,7 @@ function Shirt() {
                                     <td><button className='deleteBtn' onClick={() => {deleteById(shirt.id)}}>Delete</button></td>
                                 </tr>
                             )
-                        ) : (<tr><td colSpan='7'><h2>No Shirts Found In Any Warehouse</h2></td></tr>) 
+                        ) : (<tr><td colSpan='7'><h2>No Shirts Found</h2></td></tr>) 
                         : (<tr><td colSpan='7'>Loading...</td></tr>) 
                     }
                 </tbody>
