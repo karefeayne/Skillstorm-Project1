@@ -50,6 +50,31 @@ public class ShirtController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("byType/{type}")
+    public Iterable<Shirt> findByShirtType(@PathVariable String type) {
+        return service.findByShirtType(type);
+    }
+
+    @GetMapping("byColor/{color}")
+    public Iterable<Shirt> findByShirtColor(@PathVariable String color) {
+        return service.findByShirtColor(color);
+    }
+
+    @GetMapping("bySize/{size}")
+    public Iterable<Shirt> findByShirtSize(@PathVariable String size) {
+        return service.findByShirtSize(size);
+    }
+
+    @GetMapping("byPrice/{price}")
+    public Iterable<Shirt> findByShirtPrice(@PathVariable float price) {
+        return service.findByShirtPrice(price);
+    }
+
+    @GetMapping("warehouse/{warehouse}")
+    public Iterable<Shirt> findByShirtWarehouse(@PathVariable String warehouse) {
+        return service.findByShirtWarehouse(warehouse);
+    }
+
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Shirt create(@Valid @RequestBody Shirt shirt) {

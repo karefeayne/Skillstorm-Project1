@@ -11,4 +11,7 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
 
     @Query(value = "select * from warehouses where name=?1", nativeQuery = true)
     List<Warehouse> findByName(String name);
+
+    @Query(value = "select * from warehouses where name=?1", nativeQuery = true)
+    Warehouse retrieveByName(String name);
 }

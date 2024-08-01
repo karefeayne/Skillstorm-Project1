@@ -1,51 +1,108 @@
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin-left: 7rem;
-  margin-right: 7rem;
-}
+/* #headContainer, #contentContainer {;
+  margin-left: 3rem;
+  margin-right: 3rem;
+} */
 
-.headerLinks {
-  font-size: 3rem;
-  padding: .5rem;
-  margin: 1rem;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
+#logo, .headerLinks {
+  height: 4em;
+  width: 4em;
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
+#logo:hover, .headerLinks:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
-.logo.react:hover {
+#logo.react:hover, .headerLinks.react.hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.headerLinks {
+  font-size: 2rem;
+  padding: .5rem;
+  margin-left: 2rem;
+  display: inline;
+  border-bottom: 1px solid white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.addContainer {
+  top: 7rem;
+  padding-bottom: 1rem;
+  position: fixed;
+  border-bottom: 1px solid white;
 }
 
-.card {
-  padding: 2em;
+.deleteBtn {
+  background-color: rgb(202, 0, 0);
 }
 
-.read-the-docs {
-  color: #888;
+.addBtn {
+  background-color: green;
 }
+
+.quantityInput {
+  font-size: 1rem;
+  padding: .33rem;
+  border-radius: .25rem;
+  border: 1px solid silver;
+  width: 6rem;
+  height: 2rem;
+}
+
+.highlightValue {
+  color: yellow;
+}
+
+.innerTableRow {
+  background-color: #2c2c2c;
+}
+
+.innerTableRow:hover {
+  background-color: #5e5c5c;
+}
+
+.innerTableContainer {
+  top: 30rem;
+  position: fixed;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.warehouseDeleteContainer,.searchContainer {
+  top: 20rem;
+  position: fixed;
+}
+
+.searchButton {
+  background-color: rgb(121, 121, 126);
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+th, tr, td {
+  text-align: center;
+  padding: .5rem 2rem;
+}
+
+th {
+  top: 0;
+  position: sticky;
+  font-size: 1.25rem;
+  background: black;
+}
+
+select {
+  appearance: none;
+  font-size: 1rem;
+  padding: .33rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  border: 1px solid silver;
+  width: 6rem;
+  height: 2.5rem;
+}
+
+

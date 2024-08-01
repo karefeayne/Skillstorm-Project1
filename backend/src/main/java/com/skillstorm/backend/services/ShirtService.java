@@ -1,8 +1,10 @@
 package com.skillstorm.backend.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.skillstorm.backend.models.Shirt;
 import com.skillstorm.backend.models.Warehouse;
@@ -14,28 +16,46 @@ import jakarta.transaction.Transactional;
 @Service
 public class ShirtService {
 
-    private ShirtRepository repo;
+    private ShirtRepository shirtRepo;
 
     private WarehouseRepository warehouseRepo;
 
-    public ShirtService(ShirtRepository repo, WarehouseRepository warehouseRepo) {
-        this.repo = repo;
+    public ShirtService(ShirtRepository shirtRepo, WarehouseRepository warehouseRepo) {
+        this.shirtRepo = shirtRepo;
         this.warehouseRepo = warehouseRepo;
     }
 
     public Iterable<Shirt> findAll() {
-        return repo.findAll();
+        return shirtRepo.findAll();
     }
 
     public Optional<Shirt> findById(int id) {
-        return repo.findById(id);
+        return shirtRepo.findById(id);
     }
 
+    public Iterable<Shirt> findByShirtType(String type) {
+        return shirtRepo.findByShirtType(type);
+    }
+
+    public Iterable<Shirt> findByShirtColor(String color) {
+        return shirtRepo.findByShirtColor(color);
+    }
+
+    public Iterable<Shirt> findByShirtSize(String size) {
+        return shirtRepo.findByShirtSize(size);
+    }
+
+    public Iterable<Shirt> findByShirtPrice(float price) {
+        return shirtRepo.findByShirtPrice(price);
+    }
+
+    public List<Shirt> findByShirtWarehouse(String warehouse) {
+        return warehouseRepo.retrieveByName(warehouse).getShirts();        
+    }
     
     @Transactional
     public Shirt save(Shirt shirt) {
 
-        // TODO: Understand the need for this section
         // TODO: flush out the logic here
         Warehouse warehouse = shirt.getWarehouse();
 
@@ -47,15 +67,15 @@ public class ShirtService {
             throw new RuntimeException("Could not save shirt because warehouse does not exist");
         }
 
-        return repo.save(shirt);
+        return shirtRepo.save(shirt);
     }
 
     public void deleteAll() {
-        repo.deleteAll();
+        shirtRepo.deleteAll();
     }
 
     public void deleteById(int id) {
-        repo.deleteById(id);
+        shirtRepo.deleteById(id);
     }
 
 }
