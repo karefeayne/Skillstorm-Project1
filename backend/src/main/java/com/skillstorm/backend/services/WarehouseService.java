@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.skillstorm.backend.models.Shirt;
 import com.skillstorm.backend.models.Warehouse;
 import com.skillstorm.backend.repositories.WarehouseRepository;
 
@@ -33,6 +34,34 @@ public class WarehouseService {
 
     public Optional<Warehouse> findById(int id) {
         return repo.findById(id);
+    }
+
+    public List<Warehouse> findFromId(int value) {
+        return repo.findFromId(value);
+    }
+
+    
+    public List<Warehouse> findByState(String value) {
+        return repo.findByState(value);
+    }
+
+    public List<Warehouse> findByCity(String value) {
+        return repo.findByCity(value);
+    }
+
+    public Warehouse update(Warehouse warehouse) {
+        Optional<Warehouse> warehouseParam = findById(warehouse.getId());
+
+        Warehouse updatedWarehouse = warehouseParam.get();
+
+        updatedWarehouse.setName(warehouse.getName());
+        updatedWarehouse.setState(warehouse.getState());
+        updatedWarehouse.setCity(warehouse.getCity());
+        updatedWarehouse.setCapacity(warehouse.getCapacity());
+
+        repo.save(updatedWarehouse);
+
+        return warehouse;
     }
 
     @Transactional

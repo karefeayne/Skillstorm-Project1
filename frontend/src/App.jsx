@@ -3,7 +3,6 @@ import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Shirt from './componenets/Shirt/Shirt'
 import Home from './componenets/Home/Home'
 import Warehouse from './componenets/Warehouse/Warehouse'
-import DisplayShirts from './componenets/Warehouse/DisplayShirts'
 import Logo from '/affordafit.png'
 
 function App() {
@@ -24,11 +23,10 @@ function App() {
           </div>
           <div id='contentContainer'>
           <Routes>
-            <Route path="/home" element={<Home />}/>
+            <Route path="/home" element={<Warehouse />}/>
             <Route path="/warehouses" element={<Warehouse />}/>
-            <Route path="/shirts" element={<Shirt state={{}}/>}/>
-            <Route path="/displayShirts" element={<DisplayShirts />}></Route>
-            <Route path='*' element={<Home />} />
+            <Route path="/shirts" element={<Shirt />}/>
+            <Route path='*' element={<Warehouse />} />
             {/* <Route path='*' element={<Navigate to='/' />} /> */}
             {/* <Route path="/displayShirts/:type" component={DisplayShirts}/> */}
           </Routes>

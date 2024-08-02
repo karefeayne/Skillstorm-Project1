@@ -52,6 +52,22 @@ public class ShirtService {
     public List<Shirt> findByShirtWarehouse(String warehouse) {
         return warehouseRepo.retrieveByName(warehouse).getShirts();        
     }
+
+    public Shirt update(Shirt shirt) {
+        Optional<Shirt> shirtParam = findById(shirt.getId());
+
+        Shirt updatedShirt = shirtParam.get();
+
+        updatedShirt.setShirtType(shirt.getShirtType());
+        updatedShirt.setShirtColor(shirt.getShirtColor());
+        updatedShirt.setShirtSize(shirt.getShirtSize());
+        updatedShirt.setPrice(shirt.getPrice());
+        updatedShirt.setWarehouse(shirt.getWarehouse());
+
+        shirtRepo.save(updatedShirt);
+
+        return shirt;
+    }
     
     @Transactional
     public Shirt save(Shirt shirt) {

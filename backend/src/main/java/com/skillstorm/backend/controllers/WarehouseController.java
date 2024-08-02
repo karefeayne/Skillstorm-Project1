@@ -19,10 +19,10 @@ import com.skillstorm.backend.services.WarehouseService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -61,6 +61,36 @@ public class WarehouseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // @GetMapping("/{id}")
+    // public ResponseEntity<Warehouse> findById(@PathVariable int id) {
+    //     Optional<Warehouse> warehouse = wareService.findById(id);
+    //     if (warehouse.isPresent())
+    //         return ResponseEntity.ok(warehouse.get());
+    //     else
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    // }
+
+    @GetMapping("byId/{value}")
+    public List<Warehouse> findFromId(@PathVariable int value) {
+        return wareService.findFromId(value);
+    }
+
+
+    @GetMapping("byName/{value}")
+    public List<Warehouse> findByName(@PathVariable String value) {
+        return wareService.findByName(value);
+    }
+
+    @GetMapping("byState/{value}")
+    public List<Warehouse> findByState(@PathVariable String value) {
+        return wareService.findByState(value);
+    }
+
+    @GetMapping("byCity/{value}")
+    public List<Warehouse> findByCity(@PathVariable String value) {
+        return wareService.findByCity(value);
+    }
+    
 
     // Returns all the shirts that are associated with the
     // warehouse that has the id passed in as an argument
@@ -69,12 +99,19 @@ public class WarehouseController {
         Optional<Warehouse> warehouse = wareService.findById(id);
         List<Shirt> shirts = warehouse.get().getShirts();
         return shirts;
-    }
+    }  
+    
 
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Warehouse create(@Valid @RequestBody Warehouse warehouse) {
         return wareService.save(warehouse);
+    }
+
+    @PutMapping()
+    @ResponseStatus(code = HttpStatus.NO_CONTENT) 
+    public Warehouse update(@Valid @RequestBody Warehouse warehouse) {
+        return wareService.update(warehouse);
     }
 
 
