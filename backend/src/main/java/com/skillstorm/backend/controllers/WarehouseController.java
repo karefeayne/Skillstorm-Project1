@@ -36,6 +36,7 @@ public class WarehouseController {
 
     private ShirtService shirtService;
 
+    // Same as autowiring both variables
     public WarehouseController(WarehouseService wareService, ShirtService shirtService) {
         this.wareService = wareService;
         this.shirtService = shirtService;
@@ -60,15 +61,6 @@ public class WarehouseController {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Warehouse> findById(@PathVariable int id) {
-    //     Optional<Warehouse> warehouse = wareService.findById(id);
-    //     if (warehouse.isPresent())
-    //         return ResponseEntity.ok(warehouse.get());
-    //     else
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    // }
 
     @GetMapping("byId/{value}")
     public List<Warehouse> findFromId(@PathVariable int value) {
@@ -102,12 +94,14 @@ public class WarehouseController {
     }  
     
 
+    // lets us store items in our database
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Warehouse create(@Valid @RequestBody Warehouse warehouse) {
         return wareService.save(warehouse);
     }
 
+    // lets us update elements in the database if they exist
     @PutMapping()
     @ResponseStatus(code = HttpStatus.NO_CONTENT) 
     public Warehouse update(@Valid @RequestBody Warehouse warehouse) {

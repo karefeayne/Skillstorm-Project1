@@ -16,6 +16,10 @@ import jakarta.persistence.Table;
 @Table(name="warehouses")
 public class Warehouse {
 
+    // The (Container) so to say of the application.
+    // This is where all other entiries are "stores" in
+    // Shirts, Pants, Hats, Shoes, Etc...
+
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +37,13 @@ public class Warehouse {
     @Column(name="capacity")
     private int capacity;
 
+
+    // Allows us to map shirts to warehouses
+    // These annotations allow us to create a junction table
+    // without actually needing to have it phycially in the database
+
+    // JsonBackReference is for nested entities that have each other ad
+    // variables. Will create a never ending loop is not checked
     @OneToMany(mappedBy = "warehouse", targetEntity = Shirt.class)
     @JsonBackReference
     List<Shirt> shirts;

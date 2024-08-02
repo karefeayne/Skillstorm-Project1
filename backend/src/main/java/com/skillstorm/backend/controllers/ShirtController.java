@@ -32,12 +32,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ShirtController {
 
 
+    // Talks to and sends requests to the service (logic) side of the application
     private ShirtService service;
 
+    // Basically the same thing as @Autowired for service variable
     public ShirtController(ShirtService service) {
         this.service = service;
     }
 
+    // Various modes of get request based on what
+    // Arguments and vvariables we are given from the front end
     @GetMapping
     public Iterable<Shirt> findAll() {
         return service.findAll();
@@ -77,18 +81,28 @@ public class ShirtController {
         return service.findByShirtWarehouse(warehouse);
     }
 
+
+    // Only 1 post method that handles all of our needs
+    // for the application
     @PostMapping()
     @ResponseStatus(code = HttpStatus.CREATED)
     public Shirt create(@Valid @RequestBody Shirt shirt) {
         return service.save(shirt);
     }
 
+    // Also only 1 put request as this serves the purpose of
+    // allowing out front end to send it inputs of any kinds
+    // and all will still be handled because of the stucture of
+    // what this method requires as input
     @PutMapping()
     @ResponseStatus(code = HttpStatus.NO_CONTENT) 
     public Shirt update(@Valid @RequestBody Shirt shirt) {
         return service.update(shirt);
     }
 
+
+    // Delete methods that can either completely wipe the database
+    // of all items, or one by one by their unique id
     @DeleteMapping("/all")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteAll() {

@@ -14,6 +14,11 @@ import jakarta.transaction.Transactional;
 @Service
 public class WarehouseService {
 
+
+    /**
+     * lets us talk directly to out repository class
+     * which handles communication with the database
+     */
     private WarehouseRepository repo;
 
     public WarehouseService(WarehouseRepository repo) {
@@ -49,6 +54,8 @@ public class WarehouseService {
         return repo.findByCity(value);
     }
 
+    // input validation is done way before this bit of code runs
+    // so no check here
     public Warehouse update(Warehouse warehouse) {
         Optional<Warehouse> warehouseParam = findById(warehouse.getId());
 

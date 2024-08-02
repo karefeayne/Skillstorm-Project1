@@ -8,6 +8,9 @@ import { Label, Form, Button, Select, Alert, TextInput, SiteAlert } from "@truss
 
 function Warehouse() {
 
+    // The home of the homes
+    // This compoenent houses our warehouses and allows us to interact with them directly
+
     const url = "http://localhost:8080/warehouses"
 
     const [warehouses, setWarehouses] = useState([]);
@@ -188,6 +191,13 @@ function Warehouse() {
 
     }
 
+
+    // 4 containers in this component
+    // first and always first, our add container
+    // second is our search/filter contrainer
+    // third is the edit container that allows real time updates of warehouses that can be seen immediately without reloading
+    // Last, obviously, we render our containers (warehouses) in a grid/card fashion of 4 columns per row
+    // warehouses are self containing and clicking on one routes you to a list of the shirts at thaht warehouse
     return (
         <>
         <ToastContainer />

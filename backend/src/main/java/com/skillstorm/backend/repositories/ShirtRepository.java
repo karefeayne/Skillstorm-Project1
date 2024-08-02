@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ShirtRepository extends JpaRepository<Shirt, Integer> {
 
+
+    // A few queries that were needed for nieche operations in the application
+    // JpaRepository had most the basic and useful requests that we needed
     @Query(value = "select * from shirts where shirt_type=?1", nativeQuery = true)
     List<Shirt> findByShirtType(String shirtType);
 

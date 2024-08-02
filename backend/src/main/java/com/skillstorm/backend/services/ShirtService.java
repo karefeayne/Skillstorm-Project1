@@ -16,15 +16,19 @@ import jakarta.transaction.Transactional;
 @Service
 public class ShirtService {
 
+    // talks directly to our repository and retrieves data for us
     private ShirtRepository shirtRepo;
 
     private WarehouseRepository warehouseRepo;
 
+    // Similar to autowiring, but in this case we need 2 beans so easier to do via construction
     public ShirtService(ShirtRepository shirtRepo, WarehouseRepository warehouseRepo) {
         this.shirtRepo = shirtRepo;
         this.warehouseRepo = warehouseRepo;
     }
 
+
+    // All the basic necessities for retrieving data based on optional input
     public Iterable<Shirt> findAll() {
         return shirtRepo.findAll();
     }
@@ -53,6 +57,11 @@ public class ShirtService {
         return warehouseRepo.retrieveByName(warehouse).getShirts();        
     }
 
+
+    // One of the most important methods here
+    // Allows up to update our items on the fly because
+    // save simply updates an existing element if an element with
+    // a matching primary key is sent into it. Very useful
     public Shirt update(Shirt shirt) {
         Optional<Shirt> shirtParam = findById(shirt.getId());
 
@@ -68,7 +77,13 @@ public class ShirtService {
 
         return shirt;
     }
+
+
     
+
+    // The most important method in the application
+    // lets us directly store items in the data base
+    // without this method, there would be no app
     @Transactional
     public Shirt save(Shirt shirt) {
 
@@ -86,6 +101,8 @@ public class ShirtService {
         return shirtRepo.save(shirt);
     }
 
+
+    // Basic deletes
     public void deleteAll() {
         shirtRepo.deleteAll();
     }

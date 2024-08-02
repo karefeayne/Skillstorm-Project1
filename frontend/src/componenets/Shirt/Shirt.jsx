@@ -7,10 +7,15 @@ import { Label, Form, Button, Select, Alert, TextInput } from "@trussworks/react
 function Shirt() {
 
     const { state } = useLocation()
+
+    //For use if in the future we want to send
+    //arguments into this compoenent
+
     //const { warehouse } = state;
 
-    //{console.log("In Shirts")}
 
+    // All the variables and states that allow us to
+    // run the prigram without needing to refresh
     const shirtUrl = "http://localhost:8080/shirts"
     const warehouseUrl = "http://localhost:8080/warehouses"
 
@@ -40,6 +45,8 @@ function Shirt() {
 
     let storedVals = []
 
+
+    // Load all available warehouses one when mounted
     useEffect(() => {
         fetch(warehouseUrl)
         .then(data => data.json())
@@ -67,6 +74,11 @@ function Shirt() {
     // }, [deleted, created, reload])
 
 
+
+    // based on if a prop was passed to this component or not
+    // we poopulate our shirts accordingly
+    // console logs through out incase we want to follow along
+    // and check what is exactly going on as the code is running
     useEffect(() => {
 
         let properUrl = ""
@@ -82,7 +94,7 @@ function Shirt() {
             properUrl = shirtUrl
         }
 
-        console.log(properUrl)
+        // console.log(properUrl)
 
         fetch(properUrl) // + "/" + warehouse.id + "/shirts")
         .then(data => data.json())
@@ -95,6 +107,8 @@ function Shirt() {
     }, [deleted, created, reload, firstLoad, state])
 
 
+    // A function that allows us to delete from our database
+    // using the fetch api
     function deleteById(shirt) {
         let shirt_id = shirt.id
         const deleteUrl = shirtUrl + "/" +shirt_id;
@@ -110,6 +124,11 @@ function Shirt() {
         
     }
 
+    // add to database using fetch api
+    // passing along very specific data
+    // as most of the input validation
+    // happens in the front end before it ever
+    // makes it to the backend
     function addShirt(e) {
         e.preventDefault();
         
@@ -195,6 +214,9 @@ function Shirt() {
     
     }
 
+
+    // Allows up to populate elements of our dom without
+    // reloading the page for item editing purposes
     function handleChange(e) {
         e.preventDefault();
 
@@ -252,6 +274,9 @@ function Shirt() {
 
     }
 
+
+    // handles retrival of items from our database
+    // based on user input
     function search(e) {
         e.preventDefault();
         
@@ -316,6 +341,8 @@ function Shirt() {
         }
     }
 
+
+    // Allows us to reset form input elements
     function reset() {
         setSearchVals([])
         document.getElementById("by").value = ""
@@ -324,6 +351,9 @@ function Shirt() {
         setReload(!reload)  
     }
 
+
+    // This allows us to toggle edit elements on and off
+    // without reloading the page
     function handleEdit(shirt) {  
         
         let btn = document.getElementById("editBtn" + shirt.id)
@@ -377,6 +407,11 @@ function Shirt() {
     //    document.getElementById("confirmBtn" + shirt.id).removeAttribute("disabled")
     }
 
+
+    // This is where the magic happens.
+    // This is where we take all of that input we worked hard to get
+    // from the user without reloading the page and use it to
+    // update their desired item still without reloading the page
     function updateShirt(shirt) {
 
         if (document.getElementById("shirtType" + shirt.id).disabled == false) {
@@ -452,6 +487,11 @@ function Shirt() {
 
 
     return (
+
+        // 3 major components
+        // an add container that is always at the top and is static
+        // A search container that allows the user to input data to use for our filterd requests
+        // finally the actually display of the data we have retrieved
         <>
         <ToastContainer />
         <div className='addContainer'>

@@ -7,7 +7,7 @@ import Logo from '/affordafit.png'
 
 function App() {
 
-
+  //compoenent only used for routing purposes
   return (
     <>
       <BrowserRouter>
