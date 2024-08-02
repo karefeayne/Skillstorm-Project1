@@ -27,7 +27,7 @@
 }
 
 .addContainer {
-  top: 5rem;
+  top: 4rem;
   padding-bottom: 1rem;
   position: fixed;
   border-bottom: 1px solid white;
@@ -113,7 +113,14 @@
 
 .searchContainer {
   justify-items: center;
-  top: 17rem;
+  top: 15rem;
+  position: fixed;
+  border-bottom: 1px solid white;
+}
+
+.editContainer {
+  justify-items: center;
+  top: 21rem;
   position: fixed;
 }
 

@@ -15,8 +15,6 @@ function Warehouse() {
     const [created, setCreated] = useState(false);
     const [deleted, setDeleted] = useState(false);
     let names = []
-    let storedVals = []
-    let cancel = false
 
     useEffect(() => {
 
@@ -145,52 +143,48 @@ function Warehouse() {
     }
 
     function reset(e) {
-        setCreated(!created)
+        setReloaad(!reload)
+        console.log(e)
     }
 
-    function handleEdit(warehouse) {
+    function update(e) {
+        e.preventDefault()
 
-        let btn = document.getElementById("editBtn" + warehouse.id)
+        let warehouse = warehouses[0]
 
+        let data = new FormData(e.target)
 
-        console.log(btn)
+        let by = data.get("by")
+        let warid = data.get("idInput")
+        let warcity = data.get("city")
+        let warstate = data.get("state")
+        let warcapacity = data.get("capacity")
+        let warname = data.get("name")
+        console.log(warehouse)
 
-        console.log(document.getElementById("stateIntput" + warehouse.id))
-        
+        const newWarehouse = {
+                id: warid,
+                name: warname,
+                state: warstate,
+                city: warcity,
+                capacity: warcapacity
+        }
 
-        // if (cancel == false) {
-        //     storedVals.push(document.getElementById("stateIntput" + warehouse.id).value)
-        //     storedVals.push(document.getElementById("cityInput" + warehouse.id).value)
-        //     storedVals.push(document.getElementById("capacityInput" + warehouse.id).value)
+        fetch(url, {
+            method: "PUT", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newWarehouse)
+        })
+        .then(() => setCreated(!created))
+        .catch(err => {
+            console.log(err)
+        })
 
+        e.target.reset()
+        toast.info("Changes have been saved", {theme:"dark"})
 
-        //     document.getElementById("stateIntput" + warehouse.id).disabled = false
-        //     document.getElementById("cityInput" + warehouse.id).disabled = false
-        //     document.getElementById("capacityInput" + warehouse.id).disabled = false
-
-        //     console.log(storedVals)
-
-        //     btn.innerHTML = "Cancel"
-        //     btn.style.backgroundColor = "red"
-        //     cancel = true
-        // }
-        // else {
-        //     document.getElementById("stateIntput" + warehouse.id).value = storedVals[0]
-        //     document.getElementById("cityInput" + warehouse.id).value = storedVals[1]
-        //     document.getElementById("capacityInput" + warehouse.id).value = storedVals[2]
-            
-
-
-        //     document.getElementById("stateIntput" + warehouse.id).disabled = true
-        //     document.getElementById("cityInput" + warehouse.id).disabled = true
-        //     document.getElementById("capacityInput" + warehouse.id).disabled = true
-
-            
-
-        //     btn.innerHTML = "Edit"
-        //     btn.style.backgroundColor = "darkviolet"
-        //     cancel = false
-        // }
 
     }
 
@@ -214,10 +208,7 @@ function Warehouse() {
             </Form>
             </div>
 
-            {/* <div className='warehouseDeleteContainer'>
-                <button className='deleteBtn'>Delete A Warehouse</button>
-            </div> */}
-
+    
         <div className='searchContainer'>
             <Form onSubmit={search} onReset={reset}>
                 <table className='searchTable'>
@@ -243,22 +234,52 @@ function Warehouse() {
         </div>
 
 
+        <div className='editContainer'>
+            <Form onSubmit={update}>
+                <table className='searchTable'>
+                    <tbody>
+                    <tr>
+                    <td>
+                    Edit By: <select onChange={handleChange} name="by" id="by">
+                        <option value="state">State</option>
+                        <option value="city">City</option>
+                        <option value="capacity">Capacity</option>
+                    </select>
+                    </td>
+                    <td><td>Id:<TextInput className='quantityInput' name="idInput" id="idInput" type='number' min={1}></TextInput></td></td>
+                    <td>
+                    </td>
+                    <td>Name:<TextInput className='quantityInput' name="name" id="name" type='text' min={1}></TextInput></td>
+                    <td>State:<TextInput className='quantityInput' name="state" id="state" type='text' min={1}></TextInput></td>
+                    <td>City:<TextInput className='quantityInput' name="city" id="city" type='text' min={1}></TextInput></td>
+                    <td>Cap:<TextInput className='quantityInput' name="capacity" id="capacity" type='number' min={1}></TextInput></td>
+                    <td><button className='editBtn' type="submit">Edit</button></td>
+                </tr>
+                </tbody>
+                </table>
+                </Form>
+                <br />
+            </div>
+
+
         <div className='warehousesGrid'>
             {loaded ?
                 warehouses.map(
                     warehouse => (names.push(warehouse.name),
                         <div className='outterWarehouseContainer' key={warehouse.id}>
                             <h2>{warehouse.name}</h2>
-                            <Link className='visitBtn' to={"/shirts"} state={{warehouse}}>Visit Warehouse</Link><br />
-                            <button  id={"editBtn" + warehouse.id} className='editBtn' type="button" onClick={() => handleEdit(warehouse)}>Edit</button> 
-                            <button className='confirmBtn'>Confirm</button>
-                            <br />
-                            <div className="warehouseContainer">
-                                <p className="wareBlock">ID:      </p><TextInput id={'idInput' + warehouse.Id} className="quantityInput" type="text" defaultValue={warehouse.id} disabled></TextInput> <br />
-                                <p className="wareBlock">State:     </p><TextInput id={'stateInput' + warehouse.Id} className="quantityInput" type="text" defaultValue={warehouse.state} ></TextInput> <br />
-                                <p className="wareBlock">City:     </p><TextInput id={'cityInput' + warehouse.Id} className="quantityInput" type="text" defaultValue={warehouse.city} ></TextInput> <br />
-                                <p className="wareBlock">Capacity:     </p><TextInput id={'capacityInput' + warehouse.Id} className="quantityInput" type="text" defaultValue={warehouse.capacity} ></TextInput> 
+                            <Link to={"/shirts"} state={{warehouse}}>
+                            {/* <Link to={{
+                                pathname: "/displayShirts/parameter-type",
+                                state: {stateParam: true}
+                            }}> */}
+                                <div className="warehouseContainer">
+                                ID: {warehouse.id} <br />
+                                State: {warehouse.state} <br />
+                                City: {warehouse.city} <br />
+                                Capacity: {warehouse.capacity}
                                 </div>
+                            </Link>
                             <button className='deleteBtn' onClick={() => deleteWarehouse(warehouse.id)}>Delete Warehouse</button>
                             
                         </div>

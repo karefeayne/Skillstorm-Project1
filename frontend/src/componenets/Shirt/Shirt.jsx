@@ -328,6 +328,8 @@ function Shirt() {
         
         let btn = document.getElementById("editBtn" + shirt.id)
 
+        console.log(document.getElementById("shirtType" + shirt.id))
+
         if (cancel == false) {
             storedVals.push(document.getElementById("shirtType" + shirt.id).value)
             storedVals.push(document.getElementById("shirtColor" + shirt.id).value)
